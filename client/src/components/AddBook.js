@@ -31,7 +31,6 @@ class AddBook extends Component {
 
   submitForm(e) {
     e.preventDefault();
-    console.log(this.state);
     // use the addBookMutation
     this.props.addBookMutation({
       variables: {
