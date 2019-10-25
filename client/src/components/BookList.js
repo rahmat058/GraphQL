@@ -4,6 +4,7 @@ import { graphql } from 'react-apollo';
 
 import { getBooksQuery } from '../queries/queries'
 class BookList extends Component {
+
   displayBooks() {
     const data = this.props.data;
 
