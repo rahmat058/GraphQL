@@ -33,9 +33,15 @@ class AddBook extends Component {
     e.preventDefault();
     console.log(this.state);
     // use the addBookMutation
-    this.props.addBookMutation(); // adds a book, but with no values
+    this.props.addBookMutation({
+      variables: {
+        name: this.state.name,
+        genre: this.state.genre,
+        authorId: this.state.authorId
+      }
+    });
   }
-  
+
   render() {
     return (
       <form id="add-book" onSubmit={this.submitForm.bind(this)}>
