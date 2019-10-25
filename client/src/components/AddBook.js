@@ -1,23 +1,21 @@
 import React, { Component } from "react";
-import { gql } from "apollo-boost";
 import { graphql } from "react-apollo";
+import {flowRight as compose} from 'lodash';
 
-import { getAuthorsQuery} from '../queries/queries'
+import { getAuthorsQuery, addBookMutation } from "../queries/queries";
 
 class AddBook extends Component {
-
   constructor(props) {
     super(props);
-
     this.state = {
-      name: '',
-      genre: '',
-      authorId: ''
-    }
+      name: "",
+      genre: "",
+      authorId: ""
+    };
   }
-
   displayAuthors() {
-    var data = this.props.data;
+    console.log(this.props);
+    var data = this.props.getAuthorsQuery;
     if (data.loading) {
       return <option disabled>Loading authors</option>;
     } else {
@@ -34,18 +32,26 @@ class AddBook extends Component {
   submitForm(e) {
     e.preventDefault();
     console.log(this.state);
+    // use the addBookMutation
+    this.props.addBookMutation(); // adds a book, but with no values
   }
-
+  
   render() {
     return (
       <form id="add-book" onSubmit={this.submitForm.bind(this)}>
         <div className="field">
           <label>Book name:</label>
-          <input type="text" onChange={e => this.setState({ name: e.target.value })} />
+          <input
+            type="text"
+            onChange={e => this.setState({ name: e.target.value })}
+          />
         </div>
         <div className="field">
           <label>Genre:</label>
-          <input type="text" onChange={e => this.setState({ genre: e.target.value })} />
+          <input
+            type="text"
+            onChange={e => this.setState({ genre: e.target.value })}
+          />
         </div>
         <div className="field">
           <label>Author:</label>
@@ -60,4 +66,7 @@ class AddBook extends Component {
   }
 }
 
-export default graphql(getAuthorsQuery)(AddBook);
+export default compose(
+  graphql(getAuthorsQuery, { name: "getAuthorsQuery" }),
+  graphql(addBookMutation, { name: "addBookMutation" })
+)(AddBook);
